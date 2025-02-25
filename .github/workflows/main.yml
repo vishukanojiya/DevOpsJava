@@ -1,0 +1,24 @@
+name: CI of Java code
+on:
+  push:
+    branches:
+      - master
+jobs:
+  BuildJob:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone the repo
+        uses: actions/checkout@v4
+      - name: Setup java on runner and maven
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'maven'
+      - name: Review the code using PMD
+        run: mvn pmd:pmd
+      - name: Test the java code
+        run: mvn test
+      - name: Build the code
+        run: mvn package
+
